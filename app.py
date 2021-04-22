@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
+
+soon i'll
 """
 
 from flask import Flask, jsonify, abort, make_response, redirect
@@ -55,85 +57,15 @@ task_fields = {
 }
 
 
-class TaskListAPI(Resource):
-    # decorators = [auth.login_required]
-
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument(
-            "title",
-            type=str,
-            required=True,
-            help="no tasktitle",
-            location="json",
-        )
-        self.reqparse.add_argument("description", type=str, default="", location="json")
-        super(TaskListAPI, self).__init__()
-
-    def get(self):
-        return {"tasks": [marshal(task, task_fields) for task in tasks]}
-
-    def post(self):
-        args = self.reqparse.parse_args()
-        task = {
-            "id": tasks[-1]["id"] + 1 if len(tasks) > 0 else 1,
-            "title": args["title"],
-            "description": args["description"],
-            "done": False,
-        }
-        tasks.append(task)
-        return {"task": marshal(task, task_fields)}, 201
-
-
-class TaskAPI(Resource):
-    # decorators = [auth.login_required]
-
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument("title", type=str, location="json")
-        self.reqparse.add_argument("description", type=str, location="json")
-        self.reqparse.add_argument("done", type=bool, location="json")
-        super(TaskAPI, self).__init__()
-
-    def get(self, id):
-        return "aa"
-        task = [task for task in tasks if task["id"] == id]
-        if len(task) == 0:
-            abort(404)
-        return {"task": marshal(task[0], task_fields)}
-
-    def put(self, id):
-        task = [task for task in tasks if task["id"] == id]
-        if len(task) == 0:
-            abort(404)
-        task = task[0]
-        args = self.reqparse.parse_args()
-        for k, v in args.items():
-            if v is not None:
-                task[k] = v
-        return {"task": marshal(task, task_fields)}
-
-    def delete(self, id):
-        task = [task for task in tasks if task["id"] == id]
-        if len(task) == 0:
-            abort(404)
-        tasks.remove(task[0])
-        return {"result": True}
-
-
-api.add_resource(TaskListAPI, "/todo/api/v1.0/tasks", endpoint="tasks")
-api.add_resource(TaskAPI, "/todo/api/v1.0/tasks/<int:id>", endpoint="task")
-
-
 class ShortenerAPI(Resource):
     # decorators = [auth.login_required]
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
-            "url", required=True, help="no url provided", type=str, location="json"
+            "url", required=True, help="no url in POST", type=str
         )
-        self.reqparse.add_argument("password", type=str, location="json")
+        self.reqparse.add_argument("password", type=str)
         super(ShortenerAPI, self).__init__()
 
     def get(self):
@@ -143,11 +75,13 @@ class ShortenerAPI(Resource):
             abort(404)
         return {"task": marshal(task[0], task_fields)}
 
-    def put(self):
+    def post(self):
         args = self.reqparse.parse_args()
-        for k, v in args.items():
-            print(k, v)
-        return args
+        long_url = args["url"]
+        password = args["password"]
+        ret = db.add_url_to_db(long_url, password)
+        print(ret)
+        return ret
 
     def delete(self):
         task = [task for task in tasks if task["id"] == id]
@@ -166,16 +100,19 @@ api.add_resource(ShortenerAPI, "/api/url", endpoint="url")
 
 @app.route("/<short>", methods=["GET"])
 def short(short):
-    print(short)
-    return f'<a href="/api/url">url</a><br><p>{short}</p>'
+    stored_long_url = db.check_short_url(short)
+    if stored_long_url:
+        return redirect(stored_long_url)
+    else:
+        return (f"<p>not found {short}</p>", 404)
 
 
 HOME_HTML = """
- <form action="/api/url" method="put">
+ <form action="/api/url" method="post">
   <label for="url">Long Url</label>
   <input type="text" id="url" name="url"><br><br>
-  <label for="password">Delete Password (optional)</label>
-  <input type="text" id="password" name="password"><br><br>
+  <!-- <label for="password">Delete Password (optional)</label>
+  <input type="text" id="password" name="password"><br><br> !-->
   <input type="submit" value="Submit">
 </form> 
 """
