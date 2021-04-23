@@ -19,6 +19,7 @@ User visits homepage
 - [x] store in redis: `s:short_url -> long_url, l:long_url -> {short_hash, salt, pw_hash}`
 - [x] find appropriate hashing library
 - [ ] implement salt and delete pw for links
+- [ ] create index.html
 - [ ] show shortened link on creation
   - [ ] form must send ajax
 - [x] allow redirects at /ABC123

@@ -5,7 +5,15 @@ https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
 soon i'll
 """
 
-from flask import Flask, jsonify, abort, make_response, redirect
+from flask import (
+    Flask,
+    jsonify,
+    abort,
+    make_response,
+    redirect,
+    render_template,
+    send_from_directory,
+)
 from flask_restful import Api, Resource, reqparse, fields, marshal
 from flask_httpauth import HTTPBasicAuth
 import database as db
@@ -120,7 +128,7 @@ HOME_HTML = """
 
 @app.route("/", methods=["GET"])
 def home():
-    return HOME_HTML
+    return send_from_directory("static", "index.html")
 
 
 if __name__ == "__main__":
