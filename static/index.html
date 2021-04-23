@@ -44,9 +44,10 @@
           .then(function (data) {
             //Success code goes here
             console.log(data);
+            const truncateLongStr = (str) => str.slice(0, 18) + "...";
             const li = document.createElement("li");
             if (data.short_hash !== undefined) {
-              li.innerHTML = `<p><a href="/${data.short_hash}">${data.short_url_proper}</a> -> <a href="${url_input}">${url_input}</a></p>`;
+              li.innerHTML = `<p><a href="/${data.short_hash}">${data.short_url_proper}</a> -> <a href="${url_input}">${truncateLongStr(url_input)}</a></p>`;
             } else {
               li.innerHTML = `<p>bad request ${JSON.stringify(data)}</p>`;
             }

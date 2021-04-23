@@ -1,23 +1,24 @@
 # Url Shortener
 
-https://u.kevbot.xyz/
+Live At: https://u.kevbot.xyz/  
 
-## How it works
+Cli Example:  
+`curl -X POST https://u.kevbot.xyz/api/url -d 'url=https://google.com/'`  
 
-User visits homepage
+## Running Locally:
 
-- input box to input link
-- On input:
-  - check if url already exists shortened
-    - if so, provide the already shortened link
-    - DONE
-  - Generate hash of link and use that for the shortening somehow?
+1. start a local redis server `redis-server`
+1. set `REDIS\_URL` environment variable (probably: `redis://localhost:6379`)
+1. or `mv .env.example .env` and edit in there
+1. start a python [virtual environment](https://docs.python.org/3/tutorial/venv.html)
+1. `python -m pip install -r requirements.txt`
+1. `python app.py`
+1. open https://localhost:5000
 
 ## Todo
 
 - [x] store in redis: `s:short_url -> long_url, l:long_url -> {short_hash, salt, pw_hash}`
 - [x] find appropriate hashing library
-- [ ] implement salt and delete pw for links
 - [x] create index.html
 - [x] show shortened link on creation
   - [x] form must send ajax
@@ -38,6 +39,6 @@ User visits homepage
 - [ ] text input shortened (or long?) url
 - [x] submit button
 - [x] short url -> big url on page after submit
-
+- [ ] implement salt and delete pw for links
 - [ ] prevent shortening https://url-shortener.kevbot.xyz links
   - [ ] prevent redirect loops
