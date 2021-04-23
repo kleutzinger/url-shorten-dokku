@@ -1,7 +1,6 @@
 # Url Shortener
 
-https://url-shortener.kevbot.xyz/
-https://s.kevbot.xyz/
+https://u.kevbot.xyz/
 
 ## How it works
 
@@ -19,13 +18,15 @@ User visits homepage
 - [x] store in redis: `s:short_url -> long_url, l:long_url -> {short_hash, salt, pw_hash}`
 - [x] find appropriate hashing library
 - [ ] implement salt and delete pw for links
-- [ ] create index.html
-- [ ] show shortened link on creation
-  - [ ] form must send ajax
+- [x] create index.html
+- [x] show shortened link on creation
+  - [x] form must send ajax
 - [x] allow redirects at /ABC123
 - [x] allow post requests to make new links
   - [ ] delete requests
 - [ ] validate incoming urls?
+  - [ ] enforce fully qualified urls
+  - [ ] max url length (100?)
 - [ ] rate limiting?
 - [ ] make full post, get, delete backend
 - [x] create simple form / frontend to create new link
@@ -35,7 +36,7 @@ User visits homepage
   - [x] post(?) request
 - [ ] create delete link form
 - [ ] text input shortened (or long?) url
-- [ ] submit button
+- [x] submit button
 - [ ] confirmation message
 
 - [ ] prevent shortening https://url-shortener.kevbot.xyz links
