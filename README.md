@@ -4,16 +4,23 @@ Live At: https://u.kevbot.xyz/
 
 Cli Example:  
 `curl -X POST https://u.kevbot.xyz/api/url -d 'url=https://google.com/'`  
+returns
+```json 
+{
+  "short_hash": "-CQ4q",
+  "short_url_proper": "https://u.kevbot.xyz/-CQ4q"
+}
+```
 
 ## Running Locally:
 
 1. start a local redis server `redis-server`
-1. set `REDIS\_URL` environment variable (probably: `redis://localhost:6379`)
+1. set `REDIS_URL` environment variable (probably: `redis://localhost:6379`)
 1. or `mv .env.example .env` and edit in there
 1. start a python [virtual environment](https://docs.python.org/3/tutorial/venv.html)
 1. `python -m pip install -r requirements.txt`
 1. `python app.py`
-1. open https://localhost:5000
+1. open http://localhost:5000
 
 ## Todo
 
