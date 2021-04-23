@@ -5,20 +5,22 @@
     <title>Url Shortener</title>
   </head>
   <body>
-    <!--https://stackoverflow.com/a/45370541 -->
-    <label for="url">Long Url</label>
+    <label for="url">Input Long Url</label>
     <input type="text" id="url" name="url" /><br /><br />
-    <!-- <label for="password">Delete Password (optional)</label>
-  <input type="text" id="password" name="password"><br><br> !-->
     <button
       id="button"
       type="button"
       value="send"
       onclick="return submitForm()"
     >
-      button
+      Get short url
     </button>
-    <p>hi</p>
+    <div class="example">
+      <p>example cli call to this website:</p>
+      <pre>
+      curl -X POST https://u.kevbot.xyz/api/url -d 'url=https://google.com/'
+      </pre>
+    </div>
     <div id="links-container">
       <ul id="links"></ul>
     </div>
@@ -43,7 +45,11 @@
             //Success code goes here
             console.log(data);
             const li = document.createElement("li");
-            li.innerHTML = `<a href="/${data.short_hash}">${location.href}${data.short_hash}</a>`;
+            if (data.short_hash !== undefined) {
+              li.innerHTML = `<p><a href="/${data.short_hash}">${data.short_url_proper}</a> -> <a href="${url_input}">${url_input}</a></p>`;
+            } else {
+              li.innerHTML = `<p>bad request ${JSON.stringify(data)}</p>`;
+            }
             document.querySelector("#links").append(li);
           })
           .catch(function (err) {
@@ -52,5 +58,23 @@
           });
       }
     </script>
+    <style>
+      a {
+        color: blue;
+        text-decoration: none;
+      }
+      body {
+        margin: 0 auto;
+        width: 500px;
+        padding-top: 100px;
+      }
+      input {
+        width: 600px;
+      }
+      .example {
+        position: absolute;
+        bottom: 10px;
+      }
+    </style>
   </body>
 </html>

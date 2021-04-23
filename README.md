@@ -24,8 +24,8 @@ User visits homepage
 - [x] allow redirects at /ABC123
 - [x] allow post requests to make new links
   - [ ] delete requests
-- [ ] validate incoming urls?
-  - [ ] enforce fully qualified urls
+- [x] validate incoming urls?
+  - [x] enforce fully qualified urls
   - [ ] max url length (100?)
 - [ ] rate limiting?
 - [ ] make full post, get, delete backend
@@ -37,7 +37,7 @@ User visits homepage
 - [ ] create delete link form
 - [ ] text input shortened (or long?) url
 - [x] submit button
-- [ ] confirmation message
+- [x] short url -> big url on page after submit
 
 - [ ] prevent shortening https://url-shortener.kevbot.xyz links
   - [ ] prevent redirect loops
